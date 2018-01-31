@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Wrapper from './Wrapper'
 import Category from './Category'
-import Post from '../Post'
+import Post from '../Post/'
 import { CategoryText } from '../Category'
 import { Text } from '../Text'
 
@@ -10,7 +10,7 @@ class Categories extends Component {
     const travels = ['1','2','3']
     return (
       travels.map((travel, idx) => {
-        return <Post size={idx === 0 ? 'md' : 'sm'} underline={(idx+1) !== travels.length}/>
+        return <Post size={idx === 0 ? 'md' : 'xs'} underline={(idx+1) !== travels.length}/>
       })
     )
   }

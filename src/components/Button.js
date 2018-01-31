@@ -70,6 +70,7 @@ export const SocialButton = styled(Link)`
       background-color: rgb(53,84,145);
     }
   `}
+  ${props => props.facebook && props.bg && `background-color: rgb(53,84,145);`}
   ${props => props.google && `
     &:before {
       content: '\f1a0';
@@ -78,6 +79,7 @@ export const SocialButton = styled(Link)`
       background-color: rgb(205,51,51);
     }
   `}
+  ${props => props.google && props.bg && `background-color: rgb(205,51,51);`}
   ${props => props.twitter && `
     &:before {
       content: '\f099';
@@ -86,4 +88,13 @@ export const SocialButton = styled(Link)`
       background-color: rgb(29,161,243);
     }
   `}
+  ${props => props.twitter && props.bg && `background-color: rgb(29,161,243);`}
+`
+
+export const CircleButton = styled(Link)`
+  background-color: whitesmoke;
+  border-radius: 19px;
+  color: darkgrey;
+  display: inline-block;
+  padding: 0.5rem 1rem;
 `

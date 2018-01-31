@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Wrapper from './Wrapper'
 import SideNav from './SideNav'
 import Main from './Main'
-import Post from '../Post'
+import Post from '../Post/'
 import Counter from '../CategoryCounter/'
 import { getAllContents } from '../../api/APIClient'
 
@@ -26,6 +26,7 @@ class Blog extends Component {
           {contents.map((content, idx) => <Post key={idx+1} size='lg' content={content} underline={true}/>)}
         </Main>
         <SideNav>
+          {contents.map((content, idx) => <Post key={idx+1} size='xs' content={content} underline={true}/>)}
         </SideNav>
       </Wrapper>
     )

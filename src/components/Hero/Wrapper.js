@@ -6,8 +6,6 @@ const Wrapper = styled.div`
   overflow: hidden;
   position: relative;
 
- 
-
   @media only screen and (max-width: 480px) {
     padding: 60px 0 0 0;
 }

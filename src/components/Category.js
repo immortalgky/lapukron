@@ -5,6 +5,7 @@ export const Category = styled.div`
   border-radius: 2px;
   color: white;
   display: inline-block;
+  font-family: 'Montserrat', sans-serif;
   font-size: 0.7rem;
   margin-bottom: 1rem;
   padding: 0.5rem 1rem;
@@ -23,6 +24,7 @@ export const Category = styled.div`
 `
 
 export const CategoryText = styled.p`
+  font-family: 'Montserrat', sans-serif;
   font-size: ${props => props.size||'2rem'};
   font-weight: bold;
   margin-top: 0;
