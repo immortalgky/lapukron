@@ -3,13 +3,14 @@ import PostLG from './PostLG'
 import PostMD from './PostMD'
 import PostXS from './PostXS'
 
-const Post = ({size, underline}) => {
+const Post = ({size, content, underline}) => {
+  const props = {content, underline}
   if (size === 'lg') {
-    return <PostLG underline={underline}/>
+    return <PostLG {...props} />
   } else if (size === 'md') {
-    return <PostMD underline={underline}/>
+    return <PostMD {...props} />
   } else if (size === 'xs') {
-    return <PostXS underline={underline}/>
+    return <PostXS {...props} />
   } else {
     return null
   }

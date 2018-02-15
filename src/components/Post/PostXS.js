@@ -35,7 +35,7 @@ const PostXS = ({ underline }) => (
       <HeaderWithLink to='' h5>Linux Server Essentials: Common Firewall Rules and Commands</HeaderWithLink>
     </Title>
     <Info>
-      <TextWithLink to='' md lighter>Gky <span>•</span> 18th October 17</TextWithLink>
+      <TextWithLink to='' sm lighter>Gky <span>•</span> 18th October 17</TextWithLink>
     </Info>
     </Group>
   </Card>

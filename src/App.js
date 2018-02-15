@@ -5,7 +5,7 @@ import Modal from './components/Modal/'
 import Login from './components/Login'
 import Navbar from './components/Navbar/'
 import Main from './pages/Main/';
-import AddPage from './components/AddPage/'
+import AddPage from './pages/AddPage/'
 import history from './config/history'
 import storeConfigure from './stores/store'
 import { authMonitor } from './firebase/auth'
@@ -35,7 +35,7 @@ class App extends Component {
       this.setState({user: {}})
     }
   }
-  componentDidMount () {
+  componentWillMount () {
     authMonitor(this.handleAuthOnChange)
   }
   render () {

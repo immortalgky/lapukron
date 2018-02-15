@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import Hero from '../../components/Hero/'
-import Categories from '../../components/Categories/'
-import Blog from '../../components/Blog/'
+import Hero from '../../containers/Hero/'
+import Categories from '../../containers/Categories/'
+import Blog from '../../containers/Blog/'
+import Footer from '../../components/Footer/'
 import { getAllContents } from '../../api/APIClient'
 
 class Main extends Component {
   render() {
     return (
       <div>
-        <Hero/>
-        <Categories/>
-        <Blog/>
+        <Hero />
+        <Categories />
+        <Blog />
+        <Footer />
       </div>
     )
   }

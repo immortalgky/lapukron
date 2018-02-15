@@ -48,17 +48,14 @@ export const Button = styled(Link)`
 `
 
 export const SocialButton = styled(Link)`
-  @font-face {
-    font-family: 'Brands';
-    src: url('/fonts/fa-brands-400.ttf') format('truetype');
-  }
   align-items: center;
   background-color: #222;
   border-radius: 50%;
   color: white;
   display: flex;
-  font-family: 'Brands';
+  font-family: 'Font Awesome 5 Brands';
   font-size: 0.5rem;
+  font-weight: 400;
   height: 24px;
   justify-content: center;
   width: 24px;
@@ -96,5 +93,5 @@ export const CircleButton = styled(Link)`
   border-radius: 19px;
   color: darkgrey;
   display: inline-block;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.5rem;
 `

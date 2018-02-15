@@ -53,7 +53,7 @@ const Navbar = (props) => {
                     <i className='fas fa-bell' data-fa-transform='shrink-10'/>
                   </span>
                 </Button>
-                <Button text to=''>
+                <Button text to='/add'>
                   <span className='fa-layers fa-2x'>
                     <i className='fas fa-circle' data-fa-transform='shrink-4' style={{color: 'rgb(205,51,51)'}}/>
                     <i className='fas fa-pen-alt' data-fa-transform='shrink-10'/>

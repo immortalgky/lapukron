@@ -13,7 +13,8 @@ const TextStyle = css`
   font-size: ${props => {
       if (props.lg) return '1rem;'
       if (props.md) return '0.8rem;'
-      if (props.sm) return '0.5rem;'
+      if (props.sm) return '0.6rem;'
+      if (props.xs) return '0.5rem;'
       return `${props.size}`
     }
   };
