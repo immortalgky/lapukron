@@ -1,27 +1,14 @@
 import React, { Component } from 'react'
-import Add from './Add'
+import Title from './Title'
 import Editor from './Editor'
 
 class RichText extends Component {
   state = {
-    editorState: []
-  }
-
-  componentDidMount = () => {
-    this.initialState()
-  }
-
-  createEditorState = ({type, html}) => {
-    return {
-      type: type || 'text',
-      html: html || '',
-    }
-  }
-
-  initialState = () => {
-    const editorState = this.createEditorState({type: 'img', html: 'Cover here'})
-    
-    this.setEditorState(this.state.editorState.length + 1, editorState)
+    editorState: [
+      {type: 'cover', html: 'Cover here'},
+      {type: 'text', html: ''}
+    ],
+    focusedNode: 1
   }
 
   setEditorState = (idx, newEditorState, event) => {
@@ -47,6 +34,10 @@ class RichText extends Component {
     this.setState({editorState: editorState})
   }
 
+  setFocusNode = (idx) => {
+    this.setState({focusedNode: idx})
+  }
+
   addNewNodeBefore = (idx, newState) => {
     this.setEditorState(idx, newState, 'add')
     this.setFocusNode(idx)
@@ -57,40 +48,27 @@ class RichText extends Component {
     this.setFocusNode(idx + 1)
   }
 
-  setFocusNode = (idx) => {
-    setTimeout(() => {
-      const sel = window.getSelection()
-      const nodeToBeFocused = document.querySelector(`#item-${idx}`)
-      
-      if (nodeToBeFocused) {
-        sel.collapse(nodeToBeFocused.firstChild, nodeToBeFocused.textContent.length)
-        nodeToBeFocused.focus()
-      }
-    }, 100)
-  }
-
   deleteNode = (idx) => {
     this.setEditorState(idx, {}, 'remove')
     this.setFocusNode(idx - 1)
   }
 
   render () {
-    const { editorState } = this.state
+    const { editorState, focusedNode } = this.state
     return (
       <div>
+        <Title/>
         {editorState.map((editorState, idx) => 
-          <div key={idx} >
-            <Editor 
-              id={`item-${idx}`}
-              editorState={editorState}
-              setEditorState={this.setEditorState}
-              addNewNodeBefore={this.addNewNodeBefore}
-              addNewNodeAfter={this.addNewNodeAfter}
-              setFocusNode={this.setFocusNode}
-              deleteNode={this.deleteNode}
-            />
-            <Add/>
-          </div>
+          <Editor 
+            id={`item-${idx}`}
+            editorState={editorState}
+            isFocused={idx === focusedNode}
+            setEditorState={this.setEditorState}
+            addNewNodeBefore={this.addNewNodeBefore}
+            addNewNodeAfter={this.addNewNodeAfter}
+            setFocusNode={this.setFocusNode}
+            deleteNode={this.deleteNode}
+          />
         )}
       </div>
     )

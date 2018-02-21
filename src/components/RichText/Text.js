@@ -1,25 +1,57 @@
 import React, { Component } from 'react'
 import ReactDom, { findDOMNode } from 'react-dom'
 import styled from 'styled-components'
+import * as Helper from './Helper'
 
 const Rectangle = styled.div`
+  color: #444;
+  font-size: 1.2rem;
+  line-height: 2;
   outline: none;
 `
 
 class Text extends Component {
 
-  shouldComponentUpdate = ({editorState}) => {
-    return editorState.html !== findDOMNode(this).innerHTML
+  componentDidMount = () => {
+    // Set text value
+    findDOMNode(this).textContent = this.props.editorState.html
+    
+    // Initial focus
+    if (this.props.isFocused) {
+      this.focus()
+    }
   }
 
+  shouldComponentUpdate = ({editorState, isFocused}) => {
+    const isNotSameHTML = editorState.html !== findDOMNode(this).textContent
+    const isNotSameFocus = isFocused !== this.props.isFocused
+
+    return isNotSameHTML || isNotSameFocus
+  }
+  
   componentDidUpdate = ({editorState}) => {
-    if (this.props.editorState.html !== findDOMNode(this).innerHTML) {
-      findDOMNode(this).innerHTML = this.props.editorState.html
+    if (this.props.editorState.html !== findDOMNode(this).textContent) {
+      findDOMNode(this).textContent = this.props.editorState.html
+    }
+
+    if (this.props.isFocused) {
+      this.focus()
+    }
+  }
+
+  focus = () => {
+    const sel = window.getSelection()
+    const nodeToBeFocused = document.querySelector(`#${this.props.id}`)
+
+    if (nodeToBeFocused.firstChild) {
+      sel.collapse(nodeToBeFocused.firstChild, nodeToBeFocused.textContent.length)
+    } else {
+      nodeToBeFocused.focus()
     }
   }
 
   onInput = () => {
-    this.props.setEditorState(this.props.getKey(), {type: 'text', html: findDOMNode(this).innerHTML}, 'change')
+    this.props.setEditorState(this.props.getKey(), Helper.createEditorState({html: findDOMNode(this).textContent}), 'change')
   }
 
   onKeyDown = (e) => {
@@ -28,9 +60,9 @@ class Text extends Component {
     if (e.which === 13 && !e.shiftKey) {
       
       if (caretOffset > 0) {
-        this.props.addNewNodeAfter(this.props.getKey(), {type: 'text', html: ''})
+        this.props.addNewNodeAfter(this.props.getKey(), Helper.createEditorState({}))
       } else {
-        this.props.addNewNodeBefore(this.props.getKey(), {type: 'text', html: ''}) 
+        this.props.addNewNodeBefore(this.props.getKey(), Helper.createEditorState({})) 
       }
     
       e.preventDefault()
@@ -59,16 +91,28 @@ class Text extends Component {
     }
   }
 
+  onPaste = (e) => {
+    const caretPosition = window.getSelection().anchorOffset
+    const existingData = this.props.editorState.html
+    let pasteData = e.clipboardData.getData('Text')
+
+    pasteData = existingData.substring(0, caretPosition) + pasteData + existingData.substring(caretPosition)
+
+    this.props.setEditorState(this.props.getKey(), Helper.createEditorState({html: pasteData}), 'change')
+    e.preventDefault()
+  }
+
   render () {
     const { editorState } = this.props
     return (
       <Rectangle
         id={this.props.id} 
         contentEditable='true'
-        dangerouslySetInnerHTML={{__html: editorState.html}}
+        innerRef={c => this.text = c}
         onInput={this.onInput}
         onKeyDown={this.onKeyDown}
         onBlur={this.onBlur}
+        onPaste={this.onPaste}
       />
     )
   }
