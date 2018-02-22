@@ -5,8 +5,7 @@ import Editor from './Editor'
 class RichText extends Component {
   state = {
     editorState: [
-      {type: 'cover', html: 'Cover here'},
-      {type: 'text', html: ''}
+      {type: 'cover', html: ''}
     ],
     focusedNode: 1
   }
@@ -60,6 +59,7 @@ class RichText extends Component {
         <Title/>
         {editorState.map((editorState, idx) => 
           <Editor 
+            key={idx}
             id={`item-${idx}`}
             editorState={editorState}
             isFocused={idx === focusedNode}

@@ -8,7 +8,7 @@ const Wrapper = styled.div`
 const Input = styled.input.attrs({
   type: 'text',
   placeholder: 'Title',
-  maxlength: 100    
+  maxLength: 100    
 })`
   border: none;
   color: #222;

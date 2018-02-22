@@ -44,12 +44,12 @@ const Menu = styled(Circle)`
       content: '\f030';
     }
   `}
-  ${props => props.video && `
+  ${props => props.para && `
     bottom: -250%;
     transition-delay: 0.2s;
 
     &::before {
-      content: '\f03d';
+      content: '\f1dd';
     }
   `}
   ${props => props.part && `
@@ -72,7 +72,7 @@ class Add extends Component {
 
   componentDidMount = () => {
     this.refs.file.addEventListener('change', () => {
-      this.props.addNewNodeAfter(this.props.getKey(), {type: 'text', html: 'test add image'})
+      
     })
   }
 
@@ -94,8 +94,8 @@ class Add extends Component {
 
   }
 
-  handleVideoUpload = () => {
-   
+  handleAddParagraph = () => {
+    this.props.addNewNodeAfter(this.props.getKey(), {type: 'text', html: ''})
   }
 
   
@@ -108,7 +108,7 @@ class Add extends Component {
       >
         <Menu image alt='image' title='Add an image' onClick={this.handleImageUpload}/>
         <Menu unsplash alt='unsplash' title='Add an image from Unsplash' onClick={this.handleUnsplashSelect}/>
-        <Menu video alt='video' title='Add a video' onClick={this.handleVideoUpload}/>
+        <Menu para alt='paragraph' title='Add a paragraph' onClick={this.handleAddParagraph}/>
         <Menu part alt='part' title='Add a new part'/>
 
         <input ref='file' type='file' style={{display: 'none'}}/>

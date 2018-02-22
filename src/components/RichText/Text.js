@@ -14,7 +14,7 @@ class Text extends Component {
 
   componentDidMount = () => {
     // Set text value
-    findDOMNode(this).textContent = this.props.editorState.html
+    // findDOMNode(this).textContent = this.props.editorState.html
     
     // Initial focus
     if (this.props.isFocused) {
@@ -23,15 +23,15 @@ class Text extends Component {
   }
 
   shouldComponentUpdate = ({editorState, isFocused}) => {
-    const isNotSameHTML = editorState.html !== findDOMNode(this).textContent
+    const isNotSameHTML = editorState.html !== findDOMNode(this).innerHTML
     const isNotSameFocus = isFocused !== this.props.isFocused
 
     return isNotSameHTML || isNotSameFocus
   }
   
   componentDidUpdate = ({editorState}) => {
-    if (this.props.editorState.html !== findDOMNode(this).textContent) {
-      findDOMNode(this).textContent = this.props.editorState.html
+    if (this.props.editorState.html !== findDOMNode(this).innerHTML) {
+      findDOMNode(this).innerHTML = this.props.editorState.html
     }
 
     if (this.props.isFocused) {
@@ -44,14 +44,14 @@ class Text extends Component {
     const nodeToBeFocused = document.querySelector(`#${this.props.id}`)
 
     if (nodeToBeFocused.firstChild) {
-      sel.collapse(nodeToBeFocused.firstChild, nodeToBeFocused.textContent.length)
+      sel.collapse(nodeToBeFocused.lastChild, nodeToBeFocused.lastChild.textContent.length)
     } else {
       nodeToBeFocused.focus()
     }
   }
 
   onInput = () => {
-    this.props.setEditorState(this.props.getKey(), Helper.createEditorState({html: findDOMNode(this).textContent}), 'change')
+    this.props.setEditorState(this.props.getKey(), Helper.createEditorState({html: findDOMNode(this).innerHTML}), 'change')
   }
 
   onKeyDown = (e) => {
@@ -108,6 +108,7 @@ class Text extends Component {
       <Rectangle
         id={this.props.id} 
         contentEditable='true'
+        dangerouslySetInnerHTML={{__html: editorState.html}}
         innerRef={c => this.text = c}
         onInput={this.onInput}
         onKeyDown={this.onKeyDown}
