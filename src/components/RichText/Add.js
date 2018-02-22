@@ -71,9 +71,7 @@ const Menu = styled(Circle)`
 class Add extends Component {
 
   componentDidMount = () => {
-    this.refs.file.addEventListener('change', () => {
-      
-    })
+
   }
 
   onClick = () => {
@@ -86,8 +84,7 @@ class Add extends Component {
   }
 
   handleImageUpload = () => {
-    const click = new MouseEvent('click')
-    this.refs.file.dispatchEvent(click)
+    this.props.addNewNodeAfter(this.props.getKey(), {type: 'image', html: ''})
   }
 
   handleUnsplashSelect = () => {
@@ -97,7 +94,10 @@ class Add extends Component {
   handleAddParagraph = () => {
     this.props.addNewNodeAfter(this.props.getKey(), {type: 'text', html: ''})
   }
-
+ 
+  handleAddNewPart = () => {
+    this.props.addNewNodeAfter(this.props.getKey(), {type: 'part'})
+  }
   
 
   render () {
@@ -109,9 +109,7 @@ class Add extends Component {
         <Menu image alt='image' title='Add an image' onClick={this.handleImageUpload}/>
         <Menu unsplash alt='unsplash' title='Add an image from Unsplash' onClick={this.handleUnsplashSelect}/>
         <Menu para alt='paragraph' title='Add a paragraph' onClick={this.handleAddParagraph}/>
-        <Menu part alt='part' title='Add a new part'/>
-
-        <input ref='file' type='file' style={{display: 'none'}}/>
+        <Menu part alt='part' title='Add a new part' onClick={this.handleAddNewPart}/>
 
       </Circle>
     )

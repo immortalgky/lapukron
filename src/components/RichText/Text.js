@@ -108,6 +108,7 @@ class Text extends Component {
       <Rectangle
         id={this.props.id} 
         contentEditable='true'
+        spellCheck='false'
         dangerouslySetInnerHTML={{__html: editorState.html}}
         innerRef={c => this.text = c}
         onInput={this.onInput}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import * as Helper from './Helper'
 
 const Wrapper = styled.div`
   margin: 1rem 0;
@@ -25,24 +26,20 @@ const Counter = styled.div`
 
 class Title extends Component {
   state = {
-    title: '',
     length: 0,
     max: 100
   }
 
-  componentWillUpdate = (nextProps, nextState) => {
-    console.log(nextState)
-  }
-
   onChange = (e) => {
-    this.setState({title: e.target.value, length: e.target.value.length})
+    this.props.setEditorState(this.props.getKey(), Helper.createEditorState({type: 'title', html: e.target.value}), 'change')
+    this.setState({length: e.target.value.length})
   }
 
   render () {
-    const { title, length, max } = this.state
+    const { length, max } = this.state
     return (
       <Wrapper>
-        <Input onChange={this.onChange} value={title}/>
+        <Input onChange={this.onChange} value={this.props.editorState.html}/>
         <Counter style={{color: length === 100 ? 'red' : 'inherit'}}>
           {length} / {max}
         </Counter>

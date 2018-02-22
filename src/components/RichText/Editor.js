@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import Add from './Add'
-import Cover from './Cover'
+import Title from './Title'
+import ImageLoader from './ImageLoader'
 import Text from './Text'
+import Part from './Part'
 
 const AddBar = styled.div`
   align-items: center;
@@ -15,12 +17,15 @@ const AddBar = styled.div`
 class Editor extends Component {
 
   renderEditor = () => {
-
     switch (this.props.editorState.type) {
+      case 'title':
+        return <Title {...this.props} getKey={this.getKey}/>
       case 'text': 
         return <Text {...this.props} getKey={this.getKey}/>
-      case 'cover':
-        return <Cover {...this.props} getKey={this.getKey}/>
+      case 'image':
+        return <ImageLoader {...this.props} getKey={this.getKey}/>
+      case 'part':
+        return <Part {...this.props} getKey={this.getKey}/>
       default:
         return null
     }
@@ -36,9 +41,12 @@ class Editor extends Component {
       <div>
         {this.renderEditor()}
 
-        <AddBar>
-          <Add {...this.props} getKey={this.getKey}/>
-        </AddBar>
+        {this.getKey() !== 0 &&
+          <AddBar>
+            <Add {...this.props} getKey={this.getKey}/>
+          </AddBar>
+        }
+
       </div>
     )
   }
