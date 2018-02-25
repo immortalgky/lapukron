@@ -1,6 +1,3 @@
-export const createEditorState = ({type = 'text', html = ''}) => {
-  return {
-    type: type,
-    html: html
-  }
-}
+export const getContentKey = (id) => {
+  return parseInt(id.replace('item-', ''))
+} 

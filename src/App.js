@@ -6,6 +6,7 @@ import Login from './components/Login'
 import Navbar from './components/Navbar/'
 import Main from './pages/Main/';
 import AddPage from './pages/AddPage/'
+import Post from './pages/Post/'
 import history from './config/history'
 import storeConfigure from './stores/store'
 import { authMonitor } from './firebase/auth'
@@ -51,6 +52,7 @@ class App extends Component {
             <Switch>
               <Route exact path='/' component={Main}/>
               <Route path='/add' component={AddPage}/>
+              <Route path='/post' component={Post}/>
               {/*<Route exact path='/login' component={LoginPage}/>
               <Route exact path='/pukron/:id' component={ShowPage}/>
               <Route component={NotFound}/>*/}

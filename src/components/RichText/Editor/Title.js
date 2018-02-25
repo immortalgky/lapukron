@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import * as Helper from './Helper'
+import EditorState from '../EditorState'
+import * as Helper from '../Helper'
 
 const Wrapper = styled.div`
   margin: 1rem 0;
@@ -22,6 +23,9 @@ const Input = styled.input.attrs({
 const Counter = styled.div`
   font-size: 0.7rem;
   text-align: right;
+  ${props => !props.show && `
+    display: none;
+  `}
 `
 
 class Title extends Component {
@@ -31,16 +35,22 @@ class Title extends Component {
   }
 
   onChange = (e) => {
-    this.props.setEditorState(this.props.getKey(), Helper.createEditorState({type: 'title', html: e.target.value}), 'change')
+    const { id, editorStates, onChange } = this.props
+
     this.setState({length: e.target.value.length})
+
+    const newEditorStates = EditorState.changeEditorState(editorStates, EditorState.createTitle(e.target.value), 'CHANGE', Helper.getContentKey(id))
+    onChange(newEditorStates) 
   }
 
   render () {
     const { length, max } = this.state
+    const { read_only } = this.props
+
     return (
       <Wrapper>
-        <Input onChange={this.onChange} value={this.props.editorState.html}/>
-        <Counter style={{color: length === 100 ? 'red' : 'inherit'}}>
+        <Input onChange={this.onChange} value={this.props.editorState.html} readOnly={read_only}/>
+        <Counter show={!read_only} style={{color: length === 100 ? 'red' : 'inherit'}}>
           {length} / {max}
         </Counter>
       </Wrapper>

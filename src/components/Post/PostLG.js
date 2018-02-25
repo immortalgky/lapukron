@@ -32,7 +32,7 @@ const PostLG = ({ content, underline }) => {
     <Card underline={underline}>
       <Category size='1rem' food>FOOD</Category>
       <Title>
-        <HeaderWithLink to='' h1>Linux Server Essentials: Common Firewall Rules and Commands</HeaderWithLink>
+        <HeaderWithLink to='/post' h1>Linux Server Essentials: Common Firewall Rules and Commands</HeaderWithLink>
       </Title>
       <Info>
         <TextWithLink to='' lg lighter>Gky <span>•</span> 18th October 17</TextWithLink>

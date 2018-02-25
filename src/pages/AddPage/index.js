@@ -1,12 +1,45 @@
 import React, { Component } from 'react'
 import Wrapper from './Wrapper'
-import RichText from '../../components/RichText/'
+import { EditorState, Editor } from '../../components/RichText/'
+import axios from 'axios'
 
 class AddPage extends Component {
+  state = {
+    editorStates: EditorState.createInitialState()
+  }
+
+  onChange = (editorState) => {
+    this.setState({editorStates: editorState})
+  }
+
+  onSave = () => {
+    console.log('save')
+    axios({
+      method: 'post',
+      url: 'http://localhost:3001/pukron',
+      data: {
+        photoURL: this.state.editorStates[1].html,
+        title: this.state.editorStates[0].html,
+        author: 'Gky',
+        detail: JSON.stringify(this.state.editorStates),
+        detailHTML: 'TEST'
+      }
+    })
+      .then(() => {  })
+      .catch()
+  }
+
   render () {
+    const { editorStates } = this.state
     return (
       <Wrapper>
-        <RichText/>
+        <div onClick={this.onSave}>
+          <i class="fal fa-save"/>
+        </div>
+        <Editor 
+          editorStates={editorStates}
+          onChange={this.onChange}
+        />
       </Wrapper>
     )
   }

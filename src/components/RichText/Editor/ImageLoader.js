@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import * as Helper from './Helper'
-import { storageRef } from '../../firebase/storage'
-import firebase from '../../firebase/firebase'
+import EditorState from '../EditorState'
+import * as Helper from '../Helper'
+import { storageRef } from '../../../firebase/storage'
+import firebase from '../../../firebase/firebase'
 
 const Image = styled.img`
   background-color: whitesmoke;
@@ -24,6 +25,10 @@ const Image = styled.img`
     ${props => !props.src && `
       content: '\f083';
     `}
+  }
+
+  &:focus {
+    outline: 2px solid orange;
   }
 `
 
@@ -67,11 +72,14 @@ class ImageLoader extends Component {
         },
         () => {
           const {ref, downloadURL} = uploadTask.snapshot
+          const { id, editorStates, onChange } = this.props
 
           // Waint for transition to completed in 0.5s
           setTimeout(() => {
             this.setState({uploading: false, progress: 0})
-            this.props.setEditorState(this.props.getKey(), Helper.createEditorState({type: 'image', html: downloadURL}), 'change')
+            
+            const newEditorStates = EditorState.changeEditorState(editorStates, EditorState.createImage(downloadURL), 'CHANGE', Helper.getContentKey(id))
+            onChange(newEditorStates) 
           }, 500)
 
           e.target.value = ''
@@ -81,15 +89,39 @@ class ImageLoader extends Component {
   }
 
   onClick = () => {
-    this.refs.file.click()
+    if (!this.props.read_only && !this.props.editorState.html) {
+      this.refs.file.click()
+    }
+  }
+
+  onKeyDown = (e) => {
+    const { id, editorStates, onChange } = this.props
+
+    // Delete
+    if (e.which === 8 && Helper.getContentKey(id) !== 1) {
+      const newEditorStates = EditorState.changeEditorState(editorStates, null, 'REMOVE', Helper.getContentKey(id))
+      onChange(newEditorStates) 
+    }
+
+    // Enter
+    if (e.which === 13 && Helper.getContentKey(id) !== 1) {
+      const newEditorStates = EditorState.changeEditorState(editorStates, EditorState.createText(), 'ADD', Helper.getContentKey(id))
+      onChange(newEditorStates) 
+    }
+
+    e.preventDefault()
   }
 
   renderImageLoader = () => {
     const { uploading, progress, downloadURL } = this.state
+    const { read_only } = this.props
+
     if (!uploading) {
       return <Image
+               contentEditable={!read_only}
                src={this.props.editorState.html}
                onClick={this.onClick}
+               onKeyDown={this.onKeyDown}
               />
     } else {
       return <Loader progress={progress}/>
