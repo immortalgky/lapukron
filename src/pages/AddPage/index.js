@@ -1,43 +1,23 @@
 import React, { Component } from 'react'
 import Wrapper from './Wrapper'
-import { EditorState, Editor } from '../../components/RichText/'
-import axios from 'axios'
+import {Editor, EditorState} from '../../components/PukronEditor/'
 
 class AddPage extends Component {
   state = {
-    editorStates: EditorState.createInitialState()
+    editorState: EditorState.createEmpty()
   }
 
   onChange = (editorState) => {
-    this.setState({editorStates: editorState})
-  }
-
-  onSave = () => {
-    console.log('save')
-    axios({
-      method: 'post',
-      url: 'http://localhost:3001/pukron',
-      data: {
-        photoURL: this.state.editorStates[1].html,
-        title: this.state.editorStates[0].html,
-        author: 'Gky',
-        detail: JSON.stringify(this.state.editorStates),
-        detailHTML: 'TEST'
-      }
-    })
-      .then(() => {  })
-      .catch()
+    this.setState({editorState})
   }
 
   render () {
-    const { editorStates } = this.state
+    const { editorState } = this.state
+
     return (
       <Wrapper>
-        <div onClick={this.onSave}>
-          <i class="fal fa-save"/>
-        </div>
-        <Editor 
-          editorStates={editorStates}
+        <Editor
+          editorState={editorState}
           onChange={this.onChange}
         />
       </Wrapper>

@@ -31,7 +31,7 @@ class EditorState {
       // Check event type
       switch (event) {
         case 'CHANGE':
-          editorState[idx] = newState
+          editorState[idx] = {...editorState[idx], ...newState}
           break
         case 'REMOVE':
           editorState.splice(idx, 1)

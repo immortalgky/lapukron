@@ -78,8 +78,7 @@ class Text extends Component {
 
     if (editorState.tooltip && editorState.tooltip.show) {
       const newEditorStates = EditorState.hideTooltip(editorStates, Helper.getContentKey(id))
-      //onChange(newEditorStates)
-      console.log('hide')
+      onChange(newEditorStates)
     }
 
     if (this.props.editorState.html.length === 0) {

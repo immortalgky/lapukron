@@ -35,17 +35,30 @@ const Bubble = styled.div`
 
 class Tooltip extends Component {
 
-  onClick = (e) => {
-    e.preventDefault()
-    document.execCommand('foreColor', false, 'red')
-    
-    // const sel = window.getSelection()
-    // const range = document.createRange()
+  onMouseDown = (type) => {
+    return (e) => {
+      e.preventDefault()
 
-    // range.setStart(sel.baseNode, sel.baseOffset)
-    // range.setEnd(sel.extentNode, sel.extentOffset)
-    // const strong = document.createElement('strong')
-    // range.surroundContents(strong)
+      switch (type) {
+        case 'bold':
+          document.execCommand('bold', false)
+          break
+        case 'italic':
+          document.execCommand('italic', false)
+          break
+        case 'h1':
+          document.execCommand('formatBlock', false, 'H1')
+          break
+        case 'h2':
+          document.execCommand('formatBlock', false, 'H2')
+          break
+        case 'quote':
+          document.execCommand('formatBlock', false, 'BLOCKQUOTE')
+          break
+      }
+    }
+    
+    
 
   
   }  
@@ -56,21 +69,21 @@ class Tooltip extends Component {
     return (
       show
         ? <Bubble x={x} y={y}>
-            <div onMouseDown={this.onClick}>
+            <div onMouseDown={this.onMouseDown('bold')}>
               <i class="fas fa-bold"/>
             </div>
-            <div>
+            <div onMouseDown={this.onMouseDown('italic')}>
               <i class="fas fa-italic"/>
             </div>
             <div className='hr'>|</div>
-            <div>
+            <div onMouseDown={this.onMouseDown('h1')}>
               <i class="fas fa-h1"/>
             </div>
-            <div>
+            <div onMouseDown={this.onMouseDown('h2')}>
               <i class="fas fa-h2"/>
             </div>
             <div className='hr'>|</div>
-            <div>
+            <div onMouseDown={this.onMouseDown('quote')}>
               <i class="fas fa-quote-left"/>
             </div>
           </Bubble>
