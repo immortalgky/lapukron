@@ -54,10 +54,12 @@ class Tools extends Component {
     document.removeEventListener('selectionchange', this.handleSelectionChange)
   }
 
+  
+
   handleSelectionChange = () => {
     setTimeout(() => {
       const selectionRect = getVisibleSelectionRect(window)
-
+ 
       if (!selectionRect) return
 
       const position = {
@@ -100,12 +102,13 @@ class Tools extends Component {
     const realCollapsed = realSelection.isCollapsed
     const fakeCollapsed = fakeSelection.isCollapsed() 
     const hasFocus = fakeSelection.hasFocus
-    const isVisible = !realCollapsed && !fakeCollapsed && hasFocus
+    const isVisible = !fakeCollapsed && hasFocus && !realCollapsed
     const style = {...position}
-    
+
     if (isVisible) {
       style.visibility = 'visible'
       style.transform = 'translate(-50%) scale(1)'
+      style.transition = 'transform 0.15s cubic-bezier(.3,1.2,.2,1)'
     } else {
       style.transform = 'translate(-50%) scale(0)'
       style.visibility = 'hidden'
@@ -120,7 +123,6 @@ class Tools extends Component {
 
     return (
       <Bubble 
-        {...position}
         style={this.getStyle()}
       >
         {availableMenu.map(menu => {

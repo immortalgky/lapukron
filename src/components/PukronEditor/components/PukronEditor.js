@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import Tools from './Tools'
+import Media from './Media'
 import {Editor, EditorState, RichUtils, CompositeDecorator, AtomicBlockUtils } from 'draft-js'
 import '../Draft.css'
+
+const Wrapper = styled.div`
+  position: relative;
+`
 
 const Title = styled.input.attrs({
   type: 'text',
@@ -45,6 +50,7 @@ class PukronEditor extends Component {
     
       this.focus()
       onChange(RichUtils.toggleInlineStyle(editorState, style.toUpperCase()))
+      e.preventDefault()
     }
   }
 
@@ -54,6 +60,7 @@ class PukronEditor extends Component {
 
       this.focus()
       onChange(RichUtils.toggleBlockType(editorState, style.toLowerCase()))
+      e.preventDefault()
     }
   }
 
@@ -73,6 +80,7 @@ class PukronEditor extends Component {
         newEditorState.getSelection(),
         entityKey
       ))
+      e.preventDefault()
     }
   }
 
@@ -100,7 +108,6 @@ class PukronEditor extends Component {
     return (
       <div>
         <Title/>
-
         <Editor
           blockRendererFn={MediaBlockRender}
           editorState={editorState}
@@ -108,7 +115,9 @@ class PukronEditor extends Component {
           placeholder='Tell your story...'
           ref='editor'
         />
-
+        <Media
+          editorState={editorState}
+        />
         <Tools 
           editorState={editorState}
           toggleInlineStyle={this.inlineStyleOnClick}
@@ -149,8 +158,8 @@ const MediaBlockRender = (block) => {
   return null
 }
 
-const Media = (props) => {
-  return <img src='wefwfwf'/>
-}
+// const Media = (props) => {
+//   return <img src='wefwfwf'/>
+// }
 
 export default PukronEditor
