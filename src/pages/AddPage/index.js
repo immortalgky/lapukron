@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Wrapper from './Wrapper'
-import {Editor, EditorState} from '../../components/PukronEditor/'
+import { Editor, EditorState, convertFromRaw } from '../../components/PukronEditor/'
 
 class AddPage extends Component {
   state = {

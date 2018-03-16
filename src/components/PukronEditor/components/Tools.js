@@ -54,8 +54,6 @@ class Tools extends Component {
     document.removeEventListener('selectionchange', this.handleSelectionChange)
   }
 
-  
-
   handleSelectionChange = () => {
     setTimeout(() => {
       const selectionRect = getVisibleSelectionRect(window)

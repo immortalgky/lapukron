@@ -14,6 +14,6 @@ export const TextInputCenter = (props) => (
 export const TextInputWithAddon = (props) => (
   <Wrapper>
     <Addon>{props.children}</Addon>
-    <Input type={props.type} placeholder={props.placeholder} size={props.size}/>
+    <Input type={props.type} placeholder={props.placeholder} size={props.size} onChange={props.onChange} value={props.value}/>
   </Wrapper>
 )
