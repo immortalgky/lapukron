@@ -6,6 +6,8 @@ import Modal from '../../../Modal/'
 import UnsplashPicker from '../Unsplash'
 
 const Wrapper = styled.div`
+  align-items: center;
+  cursor: pointer;
   display: flex;
   left: -40px;
   position: absolute;
@@ -14,17 +16,19 @@ const Wrapper = styled.div`
 `
 
 const Button = styled.div`
-  align-items: center;
   background-color: white;
-  border: 1px solid #444;
+  border: 2px solid #444;
   border-radius: 50%;
-  display: flex;
+  font-size: 1.5rem;
   height: 30px;
-  justify-content: center;
   width: 30px;
 
   &::after {
     content: '+';
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 `
 
@@ -38,7 +42,7 @@ const Menu = styled.div`
 const Item = styled.div`
   align-items: center;
   background-color: white;
-  border: 1px solid #444;
+  border: 2px solid #444;
   border-radius: 50%;
   display: flex;
   height: 30px;
@@ -73,6 +77,7 @@ class Media extends Component {
       const selectionState = editorState.getSelection()
       const key = selectionState.getStartKey()
       const selectedElement = document.querySelector(`[data-offset-key='${key}-0-0']`)
+      if (!selectedElement) return 
       const rect = selectedElement.getBoundingClientRect()
       const editorParent = findDOMNode(this.props.store.get('getEditorRef')().refs.editor).parentNode
       const position = {
@@ -90,7 +95,7 @@ class Media extends Component {
     const selectionState = editorState.getSelection()
     const contentBlock = contentState.getBlockForKey(selectionState.getStartKey())
     const isVisible = contentBlock.getText() === ''
-    const style = {...position}
+    const style = { ...position }
     
     if (isVisible) {
       style.visibility = 'visible'
@@ -143,8 +148,10 @@ class Media extends Component {
           this.addMedia(type)
           break
         case 'UNSPLASH':
-          // this.addMedia(type)
           this.setState({ unsplash: true })
+          break
+        case 'VIDEO':
+          this.addMedia(type)
           break
         default:
           this.refs.file.click()
@@ -158,7 +165,7 @@ class Media extends Component {
     const contentState = editorState.getCurrentContent()
     const contentStateWithEntity = contentState.createEntity(
       type,
-      'IMMUTABLE',
+      'MUTABLE',
       data
     )
     const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
@@ -178,9 +185,9 @@ class Media extends Component {
     this.refs.file.value = ''
   }
 
-  getImageFromUnsplash = (image) => {
+  getImageFromUnsplash = (photoData) => {
     return () => {
-      this.setState({ unsplash: false }, this.addMedia('IMAGE', {url: image}))
+      this.setState({ unsplash: false }, this.addMedia('UNSPLASH', {url: photoData.urls.regular, photoData: photoData}))
     }
   }
 
@@ -196,9 +203,9 @@ class Media extends Component {
         <Menu
           style={this.menuStyle()}
         >
-          <Item onMouseDown={this.onItemMouseDown('IMAGE')}><i className='fal fa-image'/></Item>
-          <Item onMouseDown={this.onItemMouseDown('UNSPLASH')}><i className='fas fa-camera'/></Item>
-          <Item onMouseDown={this.onItemMouseDown('VIDEO')}><i className='fal fa-play'/></Item>
+          <Item onMouseDown={this.onItemMouseDown('IMAGE')}><i className='fas fa-image' style={{color: 'rgb(70, 180, 252)'}}/></Item>
+          <Item onMouseDown={this.onItemMouseDown('UNSPLASH')}><i className='fas fa-camera' style={{color: 'black'}}/></Item>
+          <Item onMouseDown={this.onItemMouseDown('VIDEO')}><i className='fab fa-youtube' style={{color: 'rgb(255, 0, 2)'}}/></Item>
           <Item onMouseDown={this.onItemMouseDown('PART')}><i className='fal fa-ellipsis-h'/></Item>
         </Menu>  
         <input ref='file' type='file' style={{display: 'none'}} onChange={this.fileOnChange}/>

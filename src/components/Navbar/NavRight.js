@@ -7,11 +7,11 @@ const NavRight = styled.div`
   justify-content: flex-end;
   a {
     color: white;
-    margin-left: 0.5rem;
+    margin: 0 1rem;
   }
   img {
     border-radius: 50%;
-    margin-left: 0.7rem;
+    margin-left: 1rem;
   }
 `
 

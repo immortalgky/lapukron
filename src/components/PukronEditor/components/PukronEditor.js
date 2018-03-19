@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import Tools from './Tools'
-import Cover from './Cover'
 import Image from './Image'
+import UnsplashImage from './UnsplashImage'
+import Video from './Video'
 import Part from './Part'
+import { Category } from '../../Category'
 import {Editor, EditorState, RichUtils, CompositeDecorator, AtomicBlockUtils, convertToRaw } from 'draft-js'
 import createMediaPlugin from './Media-Plugin'
 import '../Draft.css'
+import '../LapukronDraft.css'
 
 const MediaPlugin = createMediaPlugin()
 const { Media } = MediaPlugin
@@ -15,40 +18,10 @@ const plugins = [MediaPlugin]
 const EditorWrapper = styled.div`
   position: relative;
 `
-
-const Title = styled.input.attrs({
-  type: 'text',
-  placeholder: 'Title',
-  spellCheck: false,
-  maxLength: 100
-})
-`
-  background-color: transparent;
-  border: none;
-  color: whitesmoke;
-  font: inherit;
-  font-size: 2.5rem;
-  font-weight: bold;
-  left: 0;
-  margin-left: auto;
-  margin-right: auto;
-  outline: none;
-  position: absolute;
-  right: 0;
-  text-align: center;
-  top: 100px;
-  width: 70%;
-  word-break: break-word;
-  word-wrap: break-word;
-
-  ::placeholder {
-    color: white; 
-  }
-  &:focus::placeholder {
-    color: whitesmoke;
-  }
-`
 class PukronEditor extends Component {
+  state = {
+    readOnly: false
+  }
 
   componentWillMount = () => {
     const { editorState } = this.props
@@ -68,6 +41,21 @@ class PukronEditor extends Component {
 
   componentDidMount = () => {
     this.focus()
+  }
+
+  componentDidUpdate = () => {
+    const { editorState } = this.props
+    const blockKey = editorState.getSelection().getAnchorKey()
+    const contentBlock = editorState.getCurrentContent().getBlockForKey(blockKey)
+    const entityKey = contentBlock.getEntityAt(0)
+    
+    if (entityKey) {
+      const entity = editorState.getCurrentContent().getEntity(entityKey)
+
+      if (entity.getType() === 'VIDEO' && !this.state.readOnly) {
+        this.setState({ readOnly: true })
+      }
+    }
   }
 
   getEditorState = () => this.props.editorState
@@ -144,20 +132,37 @@ class PukronEditor extends Component {
     return 'not-handled'
   }
 
+  MediaBlockRender = (block) => {
+    if (block.getType() === 'atomic') {
+      return {
+        component: MediaComponent,
+        editable: false,
+        props: {
+          getEditorState: this.getEditorState,
+          setEditorState: this.setEditorState,
+          onEdit: () => this.setState({ readOnly: true }),
+          onFinish: () => this.setState({ readOnly: false }),
+          onRemove: () => null
+        }
+      }
+    }
+    return null
+  }
+
   render () {
     const { editorState, onChange } = this.props
-    console.log(editorState.getSelection())
+    const { readOnly } = this.state
+  
     return (
       <div>
-        <Cover/>
-        <Title/>
         <EditorWrapper>
           <Editor
-            blockRendererFn={MediaBlockRender}
+            blockRendererFn={this.MediaBlockRender}
             editorState={editorState}
             onChange={this.onChange}
             handleKeyCommand={this.handleKeyCommand}
             placeholder='Tell your story...'
+            readOnly={readOnly}
             ref='editor'
           />
           <Media/>
@@ -192,18 +197,8 @@ const LinkSpan = (props) => {
   )
 }
 
-const MediaBlockRender = (block) => {
-  if (block.getType() === 'atomic') {
-    return {
-      component: MediaComponent,
-      editable: false
-    }
-  }
-  return null
-}
-
 const MediaComponent = (props) => {
-  const { block, contentState } = props
+  const { block, contentState, blockProps } = props
   const entityKey = block.getEntityAt(0)
   const entity = contentState.getEntity(entityKey)
   const type = entity.getType()
@@ -212,8 +207,12 @@ const MediaComponent = (props) => {
   switch (type) {
     case 'IMAGE':
       return <Image src={data.url}/>
+    case 'VIDEO':
+      return <Video {...blockProps}/>
     case 'PART':
       return <Part/>
+    case 'UNSPLASH':
+      return <UnsplashImage src={data.url} data={data.photoData}/>
   }
 }
 

@@ -42,22 +42,13 @@ const Navbar = (props) => {
           // Enter as member
               <NavRight>
                 <Button text to=''>
-                  <span className='fa-layers fa-2x'>
-                    <i className='fas fa-circle' data-fa-transform='shrink-4' style={{color: '#333'}}/>
-                    <i className='fas fa-search' data-fa-transform='shrink-10'/>
-                  </span>
+                  <i className='fas fa-search fa-sm'/>
                 </Button>
                 <Button text to=''>
-                  <span className='fa-layers fa-2x'>
-                    <i className='fas fa-circle' data-fa-transform='shrink-4' style={{color: 'orange'}}/>
-                    <i className='fas fa-bell' data-fa-transform='shrink-10'/>
-                  </span>
+                  <i className='fas fa-bell fa-sm'/>
                 </Button>
                 <Button text to='/add'>
-                  <span className='fa-layers fa-2x'>
-                    <i className='fas fa-circle' data-fa-transform='shrink-4' style={{color: 'rgb(205,51,51)'}}/>
-                    <i className='fas fa-pen-alt' data-fa-transform='shrink-10'/>
-                  </span>
+                  <i className='fas fa-pencil-alt fa-sm'/>
                 </Button>
                 <img src={user.photoURL} alt="Profile" height="24" width="24" onClick={logOut}/>
               </NavRight>
