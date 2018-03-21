@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 const NavLeft = styled.div`
+  color: white;
   display: flex;
   flex: 10;
   font-size: 0.7rem;

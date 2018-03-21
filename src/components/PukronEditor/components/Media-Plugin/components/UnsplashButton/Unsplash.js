@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
-import Unsplash, { toJson } from 'unsplash-js'
 import styled from 'styled-components'
+import Unsplash, { toJson } from 'unsplash-js'
 
 const Card = styled.div`
   background-color: white;
@@ -70,8 +69,14 @@ const Body = styled.div`
   flex-wrap: wrap;
   height: 400px;
   justify-content: center;
-  overflow: scroll;
+  overflow: auto;
   padding: 0 2px;
+  
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  
 `
 const Image = styled.img`
   cursor: pointer;
@@ -132,17 +137,17 @@ class UnsplashPicker extends Component {
   }
 
   componentWillMount = () => {
-    // unsplash.search.photos('nature', 1, 30)
-    // .then(toJson)
-    // .then(json => {
-    //   this.setState({ photos: this.state.photos.concat(json.results) })
-    // })
+    unsplash.search.photos('nature', 1, 30)
+    .then(toJson)
+    .then(json => {
+      this.setState({ photos: this.state.photos.concat(json.results) })
+    })
   }
 
   componentDidMount = () => {
-    setTimeout(() => {
+    // setTimeout(() => {
       this.search.focus()
-    })
+    // })
   }
  
   render () {
@@ -159,7 +164,7 @@ class UnsplashPicker extends Component {
         <Body>
           { 
             this.state.photos.length > 0
-              ?  this.state.photos.map(photo => <Image onClick={this.props.getImage(photo)} src={photo.urls.thumb} draggable={false}/>) 
+              ?  this.state.photos.map(photo => <Image onClick={this.props.getImageData(photo)} src={photo.urls.thumb} draggable={false}/>) 
               :  <div><i className='fas fa-camera fa-10x'/></div>
           }
         </Body>

@@ -6,10 +6,11 @@ import UnsplashImage from './UnsplashImage'
 import Video from './Video'
 import Part from './Part'
 import { Category } from '../../Category'
-import {Editor, EditorState, RichUtils, CompositeDecorator, AtomicBlockUtils, convertToRaw } from 'draft-js'
+import {Editor, EditorState, RichUtils, CompositeDecorator, AtomicBlockUtils, convertToRaw, EditorBlock, Modifier, SelectionState } from 'draft-js'
 import createMediaPlugin from './Media-Plugin'
 import '../Draft.css'
 import '../LapukronDraft.css'
+import { Map } from 'immutable'
 
 const MediaPlugin = createMediaPlugin()
 const { Media } = MediaPlugin
@@ -136,7 +137,7 @@ class PukronEditor extends Component {
     if (block.getType() === 'atomic') {
       return {
         component: MediaComponent,
-        editable: false,
+        editable: true,
         props: {
           getEditorState: this.getEditorState,
           setEditorState: this.setEditorState,
@@ -146,13 +147,29 @@ class PukronEditor extends Component {
         }
       }
     }
+   
     return null
+  }
+
+  handleReturn = (e, editorState) => {
+    const blockKey = editorState.getSelection().getAnchorKey()
+    const contentBlock = editorState.getCurrentContent().getBlockForKey(blockKey)
+    
+    if (contentBlock.getType() === 'atomic') {
+      return 'handled'
+    }
+
+    return 'not-handled'
+  }
+
+  handleBeforeInput = (char, editorState) => {
+    return 'not-handled'
   }
 
   render () {
     const { editorState, onChange } = this.props
     const { readOnly } = this.state
-  
+    console.log(editorState.getSelection())
     return (
       <div>
         <EditorWrapper>
@@ -161,6 +178,8 @@ class PukronEditor extends Component {
             editorState={editorState}
             onChange={this.onChange}
             handleKeyCommand={this.handleKeyCommand}
+            handleReturn={this.handleReturn}
+            handleBeforeInput={this.handleBeforeInput}
             placeholder='Tell your story...'
             readOnly={readOnly}
             ref='editor'
@@ -200,19 +219,24 @@ const LinkSpan = (props) => {
 const MediaComponent = (props) => {
   const { block, contentState, blockProps } = props
   const entityKey = block.getEntityAt(0)
+  if (!entityKey) {
+   
+
+    return null
+  }
   const entity = contentState.getEntity(entityKey)
   const type = entity.getType()
   const data = entity.getData()
 
   switch (type) {
     case 'IMAGE':
-      return <Image src={data.url}/>
+      return <Image src={data.url} {...props}/>
     case 'VIDEO':
       return <Video {...blockProps}/>
     case 'PART':
       return <Part/>
     case 'UNSPLASH':
-      return <UnsplashImage src={data.url} data={data.photoData}/>
+      return <UnsplashImage src={data.url} data={data.imageData}/>
   }
 }
 

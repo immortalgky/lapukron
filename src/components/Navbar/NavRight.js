@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 const NavRight = styled.div`
   align-items: center;
+  color: white;
   display: flex;
   flex: 10;
   justify-content: flex-end;

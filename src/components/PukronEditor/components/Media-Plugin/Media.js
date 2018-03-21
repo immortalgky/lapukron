@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import ReactDOM, { findDOMNode } from 'react-dom'
 import styled from 'styled-components'
+import ImageButton from './components/ImageButton'
+import UnsplashButton from './components/UnsplashButton'
+import YoutubeButton from './components/YoutubeButton'
+import NewPartButton from './components/NewPartButton'
 import {EditorState, AtomicBlockUtils, getVisibleSelectionRect} from 'draft-js'
-import Modal from '../../../Modal/'
-import UnsplashPicker from '../Unsplash'
+
 
 const Wrapper = styled.div`
   align-items: center;
@@ -14,7 +17,6 @@ const Wrapper = styled.div`
   top: 0;
   z-index: 99;
 `
-
 const Button = styled.div`
   background-color: white;
   border: 2px solid #444;
@@ -31,14 +33,12 @@ const Button = styled.div`
     transform: translate(-50%, -50%);
   }
 `
-
 const Menu = styled.div`
   align-items: center;
   display: flex;
   justify-content: center;
   margin-left: 0.5rem;
 `
-
 const Item = styled.div`
   align-items: center;
   background-color: white;
@@ -50,13 +50,18 @@ const Item = styled.div`
   margin: 0 1px;
   width: 30px;
 `
-
+const defaultStructure = [
+  ImageButton,
+  UnsplashButton,
+  YoutubeButton,
+  NewPartButton
+]
 class Media extends Component {
 
   state = {
     collapse: true,
     position: {},
-    unsplash: false
+    structure: this.props.structure || defaultStructure
   }
 
   componentWillMount = () => {
@@ -139,58 +144,6 @@ class Media extends Component {
     this.setState(prevState => ({ collapse: !prevState.collapse }))
   }
 
-  onItemMouseDown = (type) => {
-    return (e) => {
-      e.preventDefault()
-      
-      switch (type) {
-        case 'PART':
-          this.addMedia(type)
-          break
-        case 'UNSPLASH':
-          this.setState({ unsplash: true })
-          break
-        case 'VIDEO':
-          this.addMedia(type)
-          break
-        default:
-          this.refs.file.click()
-          break
-      }
-    }
-  }
-
-  addMedia = (type, data) => {
-    const editorState = this.props.store.get('getEditorState')()
-    const contentState = editorState.getCurrentContent()
-    const contentStateWithEntity = contentState.createEntity(
-      type,
-      'MUTABLE',
-      data
-    )
-    const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
-    const newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity })
-
-    this.props.store.get('setEditorState')(AtomicBlockUtils.insertAtomicBlock(
-      newEditorState,
-      entityKey,
-      ' '    
-    ))
-
-    this.setState({ collapse: true })
-  }
-
-  fileOnChange = () => {
-    this.addMedia('IMAGE')
-    this.refs.file.value = ''
-  }
-
-  getImageFromUnsplash = (photoData) => {
-    return () => {
-      this.setState({ unsplash: false }, this.addMedia('UNSPLASH', {url: photoData.urls.regular, photoData: photoData}))
-    }
-  }
-
   render () {
     return (
       <Wrapper
@@ -203,23 +156,14 @@ class Media extends Component {
         <Menu
           style={this.menuStyle()}
         >
-          <Item onMouseDown={this.onItemMouseDown('IMAGE')}><i className='fas fa-image' style={{color: 'rgb(70, 180, 252)'}}/></Item>
-          <Item onMouseDown={this.onItemMouseDown('UNSPLASH')}><i className='fas fa-camera' style={{color: 'black'}}/></Item>
-          <Item onMouseDown={this.onItemMouseDown('VIDEO')}><i className='fab fa-youtube' style={{color: 'rgb(255, 0, 2)'}}/></Item>
-          <Item onMouseDown={this.onItemMouseDown('PART')}><i className='fal fa-ellipsis-h'/></Item>
+          {
+            this.state.structure.map(Button => 
+              <Item>
+                <Button store={this.props.store}/>
+              </Item>
+            )
+          }
         </Menu>  
-        <input ref='file' type='file' style={{display: 'none'}} onChange={this.fileOnChange}/>
-        { 
-          this.state.unsplash 
-            ? <Modal 
-                closeModal={() => this.setState({unsplash: false})}
-              >
-                <UnsplashPicker
-                  getImage={this.getImageFromUnsplash}
-                />
-              </Modal> 
-            : null 
-        }
       </Wrapper>
     )
   }

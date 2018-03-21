@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 `
 const CoverPhoto = styled.div`
   background: url('https://source.unsplash.com/1600x900/?nature');
-  nackground-position: center;
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   height: 100%;

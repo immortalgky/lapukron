@@ -2,13 +2,14 @@ import React from 'react'
 import Media from './Media'
 import createPluginStore from './plugin'
 
-export default () => {
+export default (config = {}) => {
   const pluginStore = createPluginStore()
-
+  
   const renderComponent = () => {
     return (
       <Media 
         store={pluginStore}
+        structure={config.structure}
       />
     )
   }

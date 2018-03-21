@@ -14,6 +14,7 @@ const Center = styled.div`
   flex: 1;
 `
 const Right = styled.div`
+  color: white;
   flex: 1;
 `
 
@@ -22,7 +23,9 @@ const Footer = (props) => {
     <Wrapper>
       <Left></Left>
       <Center></Center>
-      <Right></Right>
+      <Right>
+        Made with ❤️ in 🚩 Thailand
+      </Right>
     </Wrapper>
   )
 }
