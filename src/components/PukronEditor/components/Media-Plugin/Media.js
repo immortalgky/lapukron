@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   left: -40px;
   position: absolute;
   top: 0;
-  z-index: 99;
+  z-index: 98;
 `
 const Button = styled.div`
   background-color: white;

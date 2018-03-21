@@ -16,6 +16,7 @@ const createPluginStore = () => {
       ...store,
       [key]: item
     }
+    if (store['editorState'])
 
     if (pluginFn[key]) {
       pluginFn[key].forEach(fn => {

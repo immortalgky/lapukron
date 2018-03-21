@@ -14,7 +14,7 @@ const Author = styled.div`
   margin-top: 2rem;
 `
 const EditorWrapper = styled.div`
-  margin-top: 3rem;
+  margin: 3rem 0;
   min-height: 400px;
 `
 

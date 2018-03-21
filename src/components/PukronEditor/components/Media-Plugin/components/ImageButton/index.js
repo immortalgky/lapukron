@@ -13,9 +13,7 @@ export default class extends Component {
       'IMAGE',
       {url: 'https://source.unsplash.com/1600x900/?nature'}
     )
-    const editorStateWithReselection = moveSelection(editorStateWithNewContent)
-    this.props.store.get('setEditorState')(editorStateWithReselection)
-
+    this.props.store.get('setEditorState')(editorStateWithNewContent)
     this.refs.file.value = ''
   }
 
