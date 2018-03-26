@@ -7,6 +7,7 @@ const InputBar = styled.div`
   border-radius: 2rem;
   color: grey;
   display: flex;
+  height: 15%;
   margin: 0 auto;
   overflow: hidden;
   padding: 0 1rem;

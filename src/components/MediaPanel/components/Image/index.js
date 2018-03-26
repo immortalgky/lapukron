@@ -1,37 +1,27 @@
 import React from 'react'
-import ProgressBar from './components/ProgressBar'
-import UploadButton from './components/UploadButton'
-
-const state = 'IMAGE'
-const button = <i class="far fa-image" style={{color: '#21ccb5'}}/>
-const label = 'Image'
-
-const header = (
-  <div>
-    <i class="far fa-image" style={{color: '#21ccb5'}}/>
-    Image
-  </div>
-)
-
-const body = (props, state) => {
-  return (
-    <div>    
-      <div style={{margin: '2rem 0'}}>
-        <ProgressBar/>
-      </div>
-      <div style={{margin: '2rem 0'}}>
-        <UploadButton>Upload</UploadButton>
-      </div>
-    </div>
-  )
-}
+import Image from './components/Image'
 
 export default () => {
+
+  const store = {}
+  const config = {
+    state: 'LOCAL',
+    button: <i class="far fa-desktop" style={{color: '#21ccb5'}}/>,
+    label: 'Local'
+  }
+
+  const initialize = (getState, setState) => {
+    save('getState', getState)
+    save('setState', setState)
+  }
+
+  const save = (key, value) => {
+    store[key] = value
+  }
+
   return {
-    state,
-    button,
-    label,
-    header,
-    body
+    initialize,
+    config,
+    Body: <Image store={store}/>
   }
 }

@@ -14,14 +14,21 @@ const header = (
   </div>
 )
 
-const body = (props, state) => {
+const body = (props, { link }, returnState) => {
   return (
     <div>
       <div style={{margin: '2rem 0'}}>
-        <Input/>
+        <Input
+          value={link}
+          onChange={(e) => returnState({ link: e.target.value })}
+        />
       </div>
       <div style={{margin: '2rem 0'}}>
-        <Button>OK</Button>
+        <Button
+          disabled={link.length === 0}
+        >
+          OK
+        </Button>
       </div>
     </div>
   )

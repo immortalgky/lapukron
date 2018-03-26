@@ -16,7 +16,7 @@ import MediaPanel from '../../src/components/MediaPanel'
 
 const Theme = styled.div`
   font-family: 'Poppins', sans-serif;
-
+  height: 100vh;
   * {
     box-sizing: border-box;
   }

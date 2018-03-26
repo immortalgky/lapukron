@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Portal from './Portal'
 import Unsplash from './Unsplash'
+import MediaPanel from '../../../../../MediaPanel'
 import { addContentBlock } from '../../utils'
 
 export default class extends Component {
@@ -30,9 +31,7 @@ export default class extends Component {
           subscribe={this.state.showPicker}
           unsubscribe={() => this.setState({ showPicker: false })}
         >
-          <Unsplash
-            getImageData={this.getImageData}
-          />
+          <MediaPanel/>
         </Portal>
       </div>
     )

@@ -38,6 +38,7 @@ export default (props) => {
       <Input
         placeholder='Link'
         spellCheck='false'
+        {...props}
       />
     </InputBar>
   )

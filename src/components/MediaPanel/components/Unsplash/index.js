@@ -1,5 +1,8 @@
 import React from 'react'
+import Wrapper from './components/Wrapper'
 import Input from './components/Input'
+import Container from './components/Container'
+import Card from './components/Card'
 
 const state = 'UNSPLASH'
 const label = 'Unsplash'
@@ -12,11 +15,14 @@ const header = (
   </div>
 )
 
-const body = (props, state) => {
+const body = (props, { photos }) => {
   return (
-    <div>
+    <Wrapper>
       <Input/>
-    </div>
+      <Container>
+        {photos.length > 0 ? photos.map(p => <Card/>) : <div><i className='fas fa-camera fa-10x' style={{color: 'lightgrey'}}/></div>}
+      </Container>
+    </Wrapper>
   )
 }
 

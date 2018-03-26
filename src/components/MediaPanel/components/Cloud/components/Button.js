@@ -1,10 +1,16 @@
 import styled from 'styled-components'
 
 const Button = styled.div`
-  background-color: tomato;
+  background-color: ${props => {
+    if (props.disabled) return '#d8d8d8'
+    return 'tomato'
+  }};
   border-radius: 2rem;
   color: white;
-  cursor: pointer;
+  cursor: ${props => {
+    if (props.disabled) return 'not-allowed'
+    return 'pointer'
+  }};
   font-weight: bold;
   padding: 1rem 0;
   text-align: center;
