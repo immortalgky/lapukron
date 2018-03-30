@@ -1,13 +1,13 @@
 import React from 'react'
-import Image from './components/Image'
+import Link from './components/Link'
 
 export default () => {
 
   const store = {}
   const config = {
-    state: 'LOCAL',
-    button: <i class="far fa-desktop" style={{color: '#21ccb5'}}/>,
-    label: 'Local'
+    state: 'LINK',
+    button: <i class="far fa-link" style={{color: '#21ccb5'}}/>,
+    label: 'Link'
   }
 
   const initialize = (getState, setState) => {
@@ -22,6 +22,6 @@ export default () => {
   return {
     initialize,
     config,
-    Body: () => <Image store={store}/>
+    Body: () => <Link store={store}/>
   }
 }

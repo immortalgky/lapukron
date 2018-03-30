@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import createImagePlugin from './Image'
 import createUnsplashPlugin from './Unsplash'
-import createCloudPlugin from './Cloud'
+import createLinkPlugin from './Link'
 import createYoutubePlugin from './Youtube'
 
 const Panel = styled.div`
-  background-color: white;
-  border: 1px solid #444;
-  height: 450px;
+  background-color: #eee;
+  border-radius: 5px;
+  box-shadow: 0 0 16px 0 rgba(), 0 5px 16px 0 rgba();
+  height: 500px;
   margin: 0 auto;
   position: relative;
   top: 50%;
@@ -58,14 +59,12 @@ const SideButton = styled.div`
 
 const ImagePlugin = createImagePlugin()
 const UnsplashPlugin = createUnsplashPlugin()
-const CloudPlugin = createCloudPlugin()
+const LinkPlugin = createLinkPlugin()
 const YoutubePlugin = createYoutubePlugin()
 
 const structure = [
   ImagePlugin,
-  // UnsplashPlugin,
-  // CloudPlugin,
-  // YoutubePlugin
+  LinkPlugin,
 ]
 
 export default class extends Component {
@@ -73,12 +72,10 @@ export default class extends Component {
     type: 'LOCAL',
 
     // Image
-    local: {
-      lists: ['1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'],
-      progress: 75,
-    },
+    lists: ['1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'],
+    progress: 0,
+    uploading: false,
     
-
     // Unsplash
     photos: ['1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'],
 
@@ -86,14 +83,13 @@ export default class extends Component {
     link: '',
 
     // YouTube
-    youtubeLink: '',
-    lists: [],
+    youtube: '',
   }
 
   componentWillMount = () => {
     structure.map(plugin => {
       if (plugin.initialize) {
-        plugin.initialize((key) => this.state[key], (state) => this.setState(state))
+        plugin.initialize((key) => this.state[key], this.returnState)
       }
     })
   }
@@ -131,7 +127,7 @@ export default class extends Component {
             }
           </SidePanel>
           <Body>
-            { this.state.type ? structure[idx].Body : null }
+            { this.state.type ? structure[idx].Body() : null }
           </Body>
         </Container>
       </Panel>
